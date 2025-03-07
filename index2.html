@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counting Game</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            border: 10px solid #000;
+            margin: 20px;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        #game-container {
+            margin-top: 20px;
+            border: 2px solid #333;
+            padding: 20px;
+            display: inline-block;
+            background-color: #fff;
+            border-radius: 10px;
+            animation: popIn 0.5s ease-in-out;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .object {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            margin: 10px;
+            background-color: red;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: 2px solid #000;
+        }
+        .object:hover {
+            background-color: orange;
+            transform: scale(1.2);
+        }
+        .selected {
+            animation: bounce 0.5s ease;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        h1 {
+            color: #ff4500;
+            animation: slideDown 1s ease-in-out;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        p {
+            font-size: 18px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: 2px solid #2e8b57;
+        }
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Count the Objects!</h1>
+    <p>Click on <span id="target-number"></span> objects.</p>
+    <div id="game-container"></div>
+    <p id="message"></p>
+    <button onclick="startGame()">New Round</button>
+
+    <script>
+        let targetNumber;
+        let selectedCount = 0;
+
+        function startGame() {
+            const container = document.getElementById('game-container');
+            container.innerHTML = '';
+            selectedCount = 0;
+            document.getElementById('message').innerText = '';
+            
+            targetNumber = Math.floor(Math.random() * 5) + 1;
+            document.getElementById('target-number').innerText = targetNumber;
+            
+            for (let i = 0; i < 5; i++) {
+                const obj = document.createElement('div');
+                obj.classList.add('object');
+                obj.onclick = () => selectObject(obj);
+                container.appendChild(obj);
+            }
+        }
+
+        function selectObject(obj) {
+            if (!obj.classList.contains('selected')) {
+                obj.classList.add('selected');
+                obj.style.backgroundColor = 'green';
+                selectedCount++;
+                checkWin();
+            }
+        }
+
+        function checkWin() {
+            if (selectedCount === targetNumber) {
+                document.getElementById('message').innerText = 'Congrats! 🎉';
+            }
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
